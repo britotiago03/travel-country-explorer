@@ -49,8 +49,11 @@ export type Holiday = {
 export type Region = {
     name: string;
     summary: string;
-    image?: string;
-    slug: string; // For URL routing
+    capital: string;
+    area: string;
+    population: string;
+    image: string;
+    slug: string;
 };
 
 export type Emergency = {
@@ -204,46 +207,85 @@ export const portugal: Country = {
     ],
     regions: [
         {
-            name: "Lisbon Region",
-            summary: "The capital region, blending historic charm with modern European city life.",
-            slug: "lisbon-region",
-            image: "/images/lisbon-region.jpg"
+            name: "North Region",
+            capital: "Porto",
+            area: "21,278 km²",
+            population: "3,673,861",
+            slug: "north-region",
+            summary: "Cultural and historical heartland with the city of Porto and the Douro Valley.",
+            image: "/images/regions/north-region.jpg"
         },
         {
-            name: "Porto and North",
-            summary: "Home to the historic city of Porto, the Douro Valley wine region, and traditional villages.",
-            slug: "porto-north",
-            image: "/images/porto-north.jpg"
+            name: "Central Region",
+            capital: "Coimbra",
+            area: "22,636 km²",
+            population: "1,695,635",
+            slug: "central-region",
+            summary: "Home to Coimbra, medieval villages, and Serra da Estrela mountains.",
+            image: "/images/regions/central-region.jpg"
         },
         {
-            name: "Algarve",
-            summary: "Southern coastal region famous for beaches, golf, and resort towns.",
-            slug: "algarve",
-            image: "/images/algarve.jpg"
+            name: "West and Tagus Valley",
+            capital: "Santarém",
+            area: "9,839 km²",
+            population: "852,583",
+            slug: "west-tagus-valley",
+            summary: "Fertile valley known for agriculture, history, and charming towns.",
+            image: "/images/regions/west-tagus-valley.jpg"
         },
         {
-            name: "Alentejo",
-            summary: "Rural heartland known for cork production, vineyards, and whitewashed villages.",
-            slug: "alentejo",
-            image: "/images/alentejo.jpg"
+            name: "Greater Lisbon",
+            capital: "Lisbon",
+            area: "1,580 km²",
+            population: "2,126,578",
+            slug: "greater-lisbon",
+            summary: "Portugal’s vibrant capital region with history, nightlife, and culture.",
+            image: "/images/regions/greater-lisbon.jpg"
         },
         {
-            name: "Central Portugal",
-            summary: "Historic university city of Coimbra, Serra da Estrela mountains, and medieval villages.",
-            slug: "central-portugal",
-            image: "/images/central-portugal.jpg"
+            name: "Setúbal Peninsula",
+            capital: "Setúbal",
+            area: "1,421 km²",
+            population: "834,599",
+            slug: "setubal-peninsula",
+            summary: "Coastal region known for beaches, seafood, and natural parks.",
+            image: "/images/regions/setubal-peninsula.jpg"
         },
         {
-            name: "Madeira",
-            summary: "Lush Atlantic island known for its tropical gardens, hiking trails, and Madeira wine.",
-            slug: "madeira",
-            image: "/images/madeira.jpg"
+            name: "Alentejo Region",
+            capital: "Évora",
+            area: "27,329 km²",
+            population: "474,701",
+            slug: "alentejo-region",
+            summary: "Expansive plains, cork trees, vineyards, and historic towns.",
+            image: "/images/regions/alentejo-region.jpg"
         },
         {
-            name: "Azores",
-            summary: "Remote archipelago with volcanic landscapes, crater lakes, and whale watching.",
-            slug: "azores",
-            image: "/images/azores.jpg"
+            name: "Algarve Region",
+            capital: "Faro",
+            area: "4,997 km²",
+            population: "484,122",
+            slug: "algarve-region",
+            summary: "Sunny beaches, golf resorts, and picturesque coastal towns.",
+            image: "/images/regions/algarve-region.jpg"
+        },
+        {
+            name: "Madeira Autonomous Region",
+            capital: "Funchal",
+            area: "801 km²",
+            population: "256,622",
+            slug: "madeira-region",
+            summary: "Island paradise with lush landscapes and volcanic origins.",
+            image: "/images/regions/madeira-region.jpg"
+        },
+        {
+            name: "Azores Autonomous Region",
+            capital: "Ponta Delgada",
+            area: "2,351 km²",
+            population: "241,025",
+            slug: "azores-region",
+            summary: "Remote Atlantic archipelago with crater lakes and whale watching.",
+            image: "/images/regions/azores-region.jpg"
         }
     ],
     emergency: {

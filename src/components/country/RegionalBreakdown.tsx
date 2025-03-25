@@ -27,7 +27,7 @@ export default function RegionalBreakdown({ regions }: RegionalBreakdownProps) {
                     >
                         <div className="relative h-48 w-full">
                             <Image
-                                src={`/images/regions/${region.slug}.jpg`}
+                                src={region.image}
                                 alt={`${region.name} region`}
                                 fill
                                 className="object-cover"
@@ -42,7 +42,13 @@ export default function RegionalBreakdown({ regions }: RegionalBreakdownProps) {
 
                         <div className="p-4">
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">{region.name}</h3>
-                            <p className="text-gray-600 text-sm">{region.summary}</p>
+                            <p className="text-gray-600 text-sm mb-3">{region.summary}</p>
+
+                            <div className="text-sm text-gray-700 space-y-1">
+                                <p><strong>🏙 Capital:</strong> {region.capital}</p>
+                                <p><strong>📐 Area:</strong> {region.area}</p>
+                                <p><strong>👥 Population:</strong> {region.population}</p>
+                            </div>
 
                             <div className="mt-4 text-blue-600 text-sm font-medium flex items-center">
                                 Explore region
