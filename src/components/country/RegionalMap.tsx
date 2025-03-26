@@ -5,6 +5,7 @@ import Map, { Source, Layer, Popup } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { portugal } from '@/data/countries';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 type RegionFeature = {
     type: 'Feature';
@@ -24,11 +25,13 @@ type GeoJSONData = {
 };
 
 export default function RegionalMap() {
+    const router = useRouter();
     const [geoData, setGeoData] = useState<GeoJSONData | null>(null);
     const [hoverInfo, setHoverInfo] = useState<{
         lngLat: [number, number];
         regionName: string;
     } | null>(null);
+    const [cursor, setCursor] = useState<string>('default');
 
     useEffect(() => {
         fetch('/maps/portugal-regions-adjusted.json')
@@ -89,16 +92,28 @@ export default function RegionalMap() {
             (region) => region.name.toLowerCase() === regionName.toLowerCase()
         );
 
+    const getRegionSlug = (regionName: string) => {
+        const region = getRegionData(regionName);
+        return region ? region.slug : '';
+    };
+
+    const handleRegionClick = (regionName: string) => {
+        const slug = getRegionSlug(regionName);
+        if (slug) {
+            router.push(`/countries/portugal/regions/${slug}`);
+        }
+    };
+
     return (
         <div className="rounded-lg overflow-hidden shadow-md mt-12">
             <h2 className="text-3xl font-bold text-gray-800 mb-4 px-4 pt-4">
                 Visual Regional Map
             </h2>
             <p className="text-gray-600 mb-4 px-4">
-                Explore the geographic layout of Portugal's main regions. Hover for quick facts.
+                Explore the geographic layout of Portugal's main regions. Hover for quick facts or click to visit each region's page.
             </p>
 
-            <div className="h-[500px] w-full">
+            <div className="h-[500px] w-full" style={{ cursor }}>
                 <Map
                     mapboxAccessToken={mapboxToken}
                     mapStyle="mapbox://styles/mapbox/light-v11"
@@ -118,12 +133,20 @@ export default function RegionalMap() {
                     onMouseMove={(e) => {
                         const feature = e.features?.[0];
                         if (feature && feature.properties?.region) {
+                            setCursor('pointer');
                             setHoverInfo({
                                 lngLat: [e.lngLat.lng, e.lngLat.lat],
                                 regionName: feature.properties.region,
                             });
                         } else {
+                            setCursor('default');
                             setHoverInfo(null);
+                        }
+                    }}
+                    onClick={(e) => {
+                        const feature = e.features?.[0];
+                        if (feature && feature.properties?.region) {
+                            handleRegionClick(feature.properties.region);
                         }
                     }}
                 >
@@ -214,6 +237,19 @@ export default function RegionalMap() {
                                     <p className="text-sm text-gray-700">
                                         <strong>👥 Population:</strong> {getRegionData(hoverInfo.regionName)?.population}
                                     </p>
+                                    <div className="mt-3 text-blue-600 text-sm font-medium flex items-center">
+                                        Click to explore region
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2}
+                                            stroke="currentColor"
+                                            className="w-4 h-4 ml-1"
+                                        >
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                         </Popup>

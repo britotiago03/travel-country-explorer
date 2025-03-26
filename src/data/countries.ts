@@ -54,7 +54,10 @@ export type Region = {
     population: string;
     image: string;
     slug: string;
+    heroImage: string;
+    description: string;
 };
+
 
 export type Emergency = {
     police: string;
@@ -213,7 +216,9 @@ export const portugal: Country = {
             population: "3,673,861",
             slug: "north-region",
             summary: "Cultural and historical heartland with the city of Porto and the Douro Valley.",
-            image: "/images/regions/north-region.jpg"
+            image: "/images/regions/north-region/north-region.jpg",
+            heroImage: "/images/regions/north-region/north-region-hero.jpg",
+            description: "The North Region is known for its cultural depth and historic significance, highlighted by the city of Porto and the wine-rich Douro Valley. With ancient towns, mountains, and rivers, it offers a mix of tradition and natural beauty."
         },
         {
             name: "Central Region",
@@ -222,7 +227,9 @@ export const portugal: Country = {
             population: "1,695,635",
             slug: "central-region",
             summary: "Home to Coimbra, medieval villages, and Serra da Estrela mountains.",
-            image: "/images/regions/central-region.jpg"
+            image: "/images/regions/central-region/central-region.jpg",
+            heroImage: "/images/regions/central-region/central-region-hero.jpg",
+            description: "Central Portugal offers charming villages, historic university towns, and scenic mountain landscapes, including the highest peak in mainland Portugal — Serra da Estrela."
         },
         {
             name: "West and Tagus Valley",
@@ -231,7 +238,9 @@ export const portugal: Country = {
             population: "852,583",
             slug: "west-tagus-valley",
             summary: "Fertile valley known for agriculture, history, and charming towns.",
-            image: "/images/regions/west-tagus-valley.jpg"
+            image: "/images/regions/west-tagus-valley/west-tagus-valley.jpg",
+            heroImage: "/images/regions/west-tagus-valley/west-tagus-valley-hero.jpg",
+            description: "This region blends rural charm with rich history and agriculture. It's dotted with traditional towns and rolling vineyards along the Tagus River."
         },
         {
             name: "Greater Lisbon",
@@ -240,7 +249,9 @@ export const portugal: Country = {
             population: "2,126,578",
             slug: "greater-lisbon",
             summary: "Portugal’s vibrant capital region with history, nightlife, and culture.",
-            image: "/images/regions/greater-lisbon.jpg"
+            image: "/images/regions/greater-lisbon/greater-lisbon.jpg",
+            heroImage: "/images/regions/greater-lisbon/greater-lisbon-hero.jpg",
+            description: "Greater Lisbon is the economic and cultural hub of Portugal. The region features iconic architecture, museums, nightlife, and a dynamic blend of tradition and modernity."
         },
         {
             name: "Setúbal Peninsula",
@@ -249,7 +260,9 @@ export const portugal: Country = {
             population: "834,599",
             slug: "setubal-peninsula",
             summary: "Coastal region known for beaches, seafood, and natural parks.",
-            image: "/images/regions/setubal-peninsula.jpg"
+            image: "/images/regions/setubal-peninsula/setubal-peninsula.jpg",
+            heroImage: "/images/regions/setubal-peninsula/setubal-peninsula-hero.jpg",
+            description: "The Setúbal Peninsula offers beautiful beaches, fishing villages, and natural parks like Arrábida. It’s a growing residential region with excellent ferry and train access to Lisbon."
         },
         {
             name: "Alentejo Region",
@@ -258,7 +271,9 @@ export const portugal: Country = {
             population: "474,701",
             slug: "alentejo-region",
             summary: "Expansive plains, cork trees, vineyards, and historic towns.",
-            image: "/images/regions/alentejo-region.jpg"
+            image: "/images/regions/alentejo-region/alentejo-region.jpg",
+            heroImage: "/images/regions/alentejo-region/alentejo-region-hero.jpg",
+            description: "Known for its slow pace, rolling plains, and medieval towns, Alentejo is the heart of rural Portugal. It’s rich in agriculture, wine production, and historical architecture."
         },
         {
             name: "Algarve Region",
@@ -267,7 +282,9 @@ export const portugal: Country = {
             population: "484,122",
             slug: "algarve-region",
             summary: "Sunny beaches, golf resorts, and picturesque coastal towns.",
-            image: "/images/regions/algarve-region.jpg"
+            image: "/images/regions/algarve-region/algarve-region.jpg",
+            heroImage: "/images/regions/algarve-region/algarve-region-hero.jpg",
+            description: "Algarve is Portugal’s most popular tourist region, famous for its sunny weather, dramatic coastlines, beach resorts, and charming seaside towns like Lagos and Tavira."
         },
         {
             name: "Madeira Autonomous Region",
@@ -276,7 +293,9 @@ export const portugal: Country = {
             population: "256,622",
             slug: "madeira-region",
             summary: "Island paradise with lush landscapes and volcanic origins.",
-            image: "/images/regions/madeira-region.jpg"
+            image: "/images/regions/madeira-region/madeira-region.jpg",
+            heroImage: "/images/regions/madeira-region/madeira-region-hero.jpg",
+            description: "Madeira is a subtropical island known for its mountains, levadas (irrigation channels), and botanical beauty. The region offers hiking, ocean views, and vibrant local culture."
         },
         {
             name: "Azores Autonomous Region",
@@ -285,7 +304,9 @@ export const portugal: Country = {
             population: "241,025",
             slug: "azores-region",
             summary: "Remote Atlantic archipelago with crater lakes and whale watching.",
-            image: "/images/regions/azores-region.jpg"
+            image: "/images/regions/azores-region/azores-region.jpg",
+            heroImage: "/images/regions/azores-region/azores-region-hero.jpg",
+            description: "The Azores archipelago is a group of volcanic islands in the North Atlantic, famous for crater lakes, geothermal springs, whale watching, and green landscapes."
         }
     ],
     emergency: {

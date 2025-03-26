@@ -72,10 +72,20 @@ export default async function CountryPage({ params }: CountryPageProps) {
 
             {/* Main Content */}
             <div className="max-w-6xl mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Country Intro First */}
+                <CountryIntro name={country.name} capital={country.capital} />
+
+                {/* Regional Information - Moved up as requested */}
+                <div className="my-8">
+                    <RegionalBreakdown regions={country.regions} />
+                    <div className="mt-6">
+                        <RegionalMap />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                     {/* Left Column - Main Content */}
                     <div className="lg:col-span-2 space-y-8">
-                        <CountryIntro name={country.name} capital={country.capital} />
                         <LanguageSection languages={country.languages} />
                         <TimeZoneSection timeZones={country.timeZones} countryName={country.name} />
                         <CurrencySection currency={country.currency} countryName={country.name} />
@@ -91,9 +101,6 @@ export default async function CountryPage({ params }: CountryPageProps) {
                         <EmergencySection emergency={country.emergency} />
                     </div>
                 </div>
-
-                <RegionalBreakdown regions={country.regions} />
-                <RegionalMap />
             </div>
         </main>
     );
