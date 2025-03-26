@@ -10,6 +10,10 @@ type RegionFeature = {
     type: 'Feature';
     properties: {
         region: string;
+        isBox?: boolean;
+        isLabel?: boolean;
+        text?: string;
+        for?: string;
     };
     geometry: any;
 };
@@ -27,9 +31,55 @@ export default function RegionalMap() {
     } | null>(null);
 
     useEffect(() => {
-        fetch('/maps/portugal-regions.json')
+        fetch('/maps/portugal-regions-adjusted.json')
             .then((res) => res.json())
-            .then((data) => setGeoData(data));
+            .then((data) => {
+                const boxFeatures = [
+                    {
+                        type: 'Feature',
+                        properties: {
+                            isBox: true,
+                            for: 'Azores Autonomous Region',
+                            region: 'Azores Autonomous Region'
+                        },
+                        geometry: {
+                            type: 'Polygon',
+                            coordinates: [[
+                                [-19.25, 43.0],
+                                [-12.5, 43.0],
+                                [-12.5, 39.6],
+                                [-19.25, 39.6],
+                                [-19.25, 43.0]
+                            ]]
+                        }
+                    },
+                    {
+                        type: 'Feature',
+                        properties: {
+                            isBox: true,
+                            for: 'Madeira Autonomous Region',
+                            region: 'Madeira Autonomous Region'
+                        },
+                        geometry: {
+                            type: 'Polygon',
+                            coordinates: [[
+                                [-12.0, 38.5],
+                                [-10.5, 38.5],
+                                [-10.5, 37.25],
+                                [-12.0, 37.25],
+                                [-12.0, 38.5]
+                            ]]
+                        }
+                    }
+                ];
+
+                const newData = {
+                    ...data,
+                    features: [...data.features, ...boxFeatures]
+                };
+
+                setGeoData(newData);
+            });
     }, []);
 
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
@@ -52,6 +102,7 @@ export default function RegionalMap() {
                 <Map
                     mapboxAccessToken={mapboxToken}
                     mapStyle="mapbox://styles/mapbox/light-v11"
+                    projection="equirectangular"
                     initialViewState={{
                         latitude: 39.3,
                         longitude: -9,
@@ -63,7 +114,7 @@ export default function RegionalMap() {
                     touchZoomRotate={false}
                     keyboard={false}
                     doubleClickZoom={false}
-                    interactiveLayerIds={['region-fill']}
+                    interactiveLayerIds={['region-fill', 'island-box-fill']}
                     onMouseMove={(e) => {
                         const feature = e.features?.[0];
                         if (feature && feature.properties?.region) {
@@ -76,19 +127,52 @@ export default function RegionalMap() {
                         }
                     }}
                 >
-                {geoData && (
+                    {geoData && (
                         <Source id="regions" type="geojson" data={geoData}>
+                            {/* Fill for mainland regions */}
                             <Layer
                                 id="region-fill"
                                 type="fill"
+                                filter={['all',
+                                    ['!', ['has', 'isBox']],
+                                    ['!', ['has', 'isLabel']]
+                                ]}
                                 paint={{
                                     'fill-color': '#60a5fa',
                                     'fill-opacity': 0.4,
                                 }}
                             />
+
+                            {/* Outline for mainland regions */}
                             <Layer
                                 id="region-outline"
                                 type="line"
+                                filter={['all',
+                                    ['!', ['has', 'isBox']],
+                                    ['!', ['has', 'isLabel']]
+                                ]}
+                                paint={{
+                                    'line-color': '#1d4ed8',
+                                    'line-width': 1,
+                                }}
+                            />
+
+                            {/* Fill for island boxes (so hover works inside) */}
+                            <Layer
+                                id="island-box-fill"
+                                type="fill"
+                                filter={['has', 'isBox']}
+                                paint={{
+                                    'fill-color': '#bfdbfe',
+                                    'fill-opacity': 0.3,
+                                }}
+                            />
+
+                            {/* Outline for island boxes */}
+                            <Layer
+                                id="island-box-outline"
+                                type="line"
+                                filter={['has', 'isBox']}
                                 paint={{
                                     'line-color': '#1d4ed8',
                                     'line-width': 1,
