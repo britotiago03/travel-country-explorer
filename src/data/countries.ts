@@ -315,10 +315,10 @@ export const portugal: Country = {
         fire: "112",
         generalEmergency: "112"
     },
-    connectivity: "Good mobile coverage across most of the country. Free WiFi is common in cafes, hotels, and many public spaces. SIM cards are easily available for tourists.",
-    transportation: "Efficient public transportation in cities, including metro systems in Lisbon and Porto. Trains connect major cities, while buses serve smaller towns. Car rental is a good option for exploring rural areas.",
-    electricity: "230V, 50Hz with Type F (Schuko) plugs. Travelers from the UK or US may need adapters.",
-    cuisine: "Known for fresh seafood, bacalhau (salted cod), pastéis de nata (custard tarts), Port wine, and olive oil. Meal times are typically later than in northern Europe or the US.",
+    connectivity: "Good mobile coverage across most of the country. Free WiFi is common in cafes, hotels, and many public spaces. SIM cards are easily available for tourists and can be purchased at airports, mobile carrier stores, and some convenience stores.",
+    transportation: "Efficient public transportation in cities, including metro systems in Lisbon and Porto. Trains connect major cities, while buses serve smaller towns. Car rental is a good option for exploring rural areas. Many historic city centers are best explored on foot due to narrow streets and limited parking.",
+    electricity: "230V, 50Hz with Type F (Schuko) plugs. Travelers from the UK or US may need adapters. Power outlets typically accommodate two round pins. Most hotels in tourist areas have adapters available upon request.",
+    cuisine: "Portuguese cuisine is known for fresh seafood, especially bacalhau (salted cod) which is prepared in hundreds of different ways. Popular dishes include pastéis de nata (custard tarts), caldo verde (kale soup), and grilled sardines. Portugal is famous for Port wine, Vinho Verde, and Madeira wines. Meal times are typically later than in northern Europe or the US, with lunch around 1-3 PM and dinner after 8 PM.",
     climate: [
         {
             month: "January",
