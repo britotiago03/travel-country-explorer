@@ -8,7 +8,6 @@ import BasicCountryInformation from '@/components/country/BasicCountryInformatio
 import QuickFactsBox from '@/components/country/QuickFactsBox';
 import RegionalBreakdown from '@/components/country/RegionalBreakdown';
 import ClimateSection from '@/components/country/ClimateSection';
-import EmergencySection from '@/components/country/EmergencySection';
 import CountryIntro from '@/components/country/CountryIntro';
 import RegionalMap from '@/components/country/RegionalMap';
 import TravelEssentialsSection from '@/components/country/TravelEssentialsSection';
@@ -96,12 +95,13 @@ export default async function CountryPage({ params }: CountryPageProps) {
 
                         <CulturalSection cultural={country.cultural} holidays={country.holidays} />
 
-                        {/* Travel Essentials Section */}
+                        {/* Travel Essentials Section with integrated Emergency info */}
                         <TravelEssentialsSection
                             connectivity={country.connectivity}
                             transportation={country.transportation}
                             electricity={country.electricity}
                             cuisine={country.cuisine}
+                            emergency={country.emergency}
                             countryName={country.name}
                         />
 
@@ -117,7 +117,6 @@ export default async function CountryPage({ params }: CountryPageProps) {
                     {/* Right Column - Sidebar */}
                     <div className="space-y-8">
                         <QuickFactsBox country={country} />
-                        <EmergencySection emergency={country.emergency} />
                     </div>
                 </div>
             </div>

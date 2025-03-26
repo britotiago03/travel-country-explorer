@@ -64,6 +64,13 @@ export type Emergency = {
     ambulance: string;
     fire: string;
     generalEmergency?: string;
+    embassy?: {
+        us?: string;
+        uk?: string;
+        eu?: string;
+        au?: string;
+        ca?: string;
+    };
 };
 
 export type MonthlyClimate = {
@@ -309,12 +316,19 @@ export const portugal: Country = {
             description: "The Azores archipelago is a group of volcanic islands in the North Atlantic, famous for crater lakes, geothermal springs, whale watching, and green landscapes."
         }
     ],
-    emergency: {
-        police: "112",
-        ambulance: "112",
-        fire: "112",
-        generalEmergency: "112"
-    },
+        emergency: {
+            police: "112",
+            ambulance: "112",
+            fire: "112",
+            generalEmergency: "112",
+            embassy: {
+                us: "+351 21 770 2122",
+                uk: "+351 21 392 4000",
+                eu: "Various - check with your country's embassy",
+                au: "+351 21 310 1500",
+                ca: "+351 21 316 4600"
+            }
+        },
     connectivity: "Good mobile coverage across most of the country. Free WiFi is common in cafes, hotels, and many public spaces. SIM cards are easily available for tourists and can be purchased at airports, mobile carrier stores, and some convenience stores.",
     transportation: "Efficient public transportation in cities, including metro systems in Lisbon and Porto. Trains connect major cities, while buses serve smaller towns. Car rental is a good option for exploring rural areas. Many historic city centers are best explored on foot due to narrow streets and limited parking.",
     electricity: "230V, 50Hz with Type F (Schuko) plugs. Travelers from the UK or US may need adapters. Power outlets typically accommodate two round pins. Most hotels in tourist areas have adapters available upon request.",
