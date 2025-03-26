@@ -4,18 +4,16 @@ import Image from 'next/image';
 import { countries } from '@/data/countries';
 import { getCountryFlag } from '@/lib/getCountryFlag';
 
-import LanguageSection from '@/components/country/LanguageSection';
+import BasicCountryInformation from '@/components/country/BasicCountryInformation';
 import QuickFactsBox from '@/components/country/QuickFactsBox';
 import RegionalBreakdown from '@/components/country/RegionalBreakdown';
 import ClimateSection from '@/components/country/ClimateSection';
-import CurrencySection from '@/components/country/CurrencySection';
-import TimeZoneSection from '@/components/country/TimeZoneSection';
-import VisaSection from '@/components/country/VisaSection';
-import SafetySection from '@/components/country/SafetySection';
-import CulturalSection from '@/components/country/CulturalSection';
 import EmergencySection from '@/components/country/EmergencySection';
 import CountryIntro from '@/components/country/CountryIntro';
 import RegionalMap from '@/components/country/RegionalMap';
+import TravelEssentialsSection from '@/components/country/TravelEssentialsSection';
+import EntryPointsSection from '@/components/country/EntryPointsSection';
+import CulturalSection from '@/components/country/CulturalSection';
 
 type CountryPageProps = {
     params: {
@@ -86,13 +84,34 @@ export default async function CountryPage({ params }: CountryPageProps) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                     {/* Left Column - Main Content */}
                     <div className="lg:col-span-2 space-y-8">
-                        <LanguageSection languages={country.languages} />
-                        <TimeZoneSection timeZones={country.timeZones} countryName={country.name} />
-                        <CurrencySection currency={country.currency} countryName={country.name} />
-                        <VisaSection visaRequirements={country.visaRequirements} countryName={country.name} />
-                        <SafetySection safetyTips={country.safetyTips} countryName={country.name} />
+                        {/* Unified Basic Country Information */}
+                        <BasicCountryInformation
+                            languages={country.languages}
+                            currency={country.currency}
+                            timeZones={country.timeZones}
+                            visaRequirements={country.visaRequirements}
+                            safetyTips={country.safetyTips}
+                            countryName={country.name}
+                        />
+
                         <CulturalSection cultural={country.cultural} holidays={country.holidays} />
+
+                        {/* Travel Essentials Section */}
+                        <TravelEssentialsSection
+                            connectivity={country.connectivity}
+                            transportation={country.transportation}
+                            electricity={country.electricity}
+                            cuisine={country.cuisine}
+                            countryName={country.name}
+                        />
+
                         <ClimateSection climate={country.climate} />
+
+                        {/* Entry Points Section */}
+                        <EntryPointsSection
+                            entryPoints={country.entryPoints}
+                            countryName={country.name}
+                        />
                     </div>
 
                     {/* Right Column - Sidebar */}
