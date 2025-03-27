@@ -213,7 +213,10 @@ export default function RegionalMap() {
                             anchor="left"
                             offset={25}
                         >
-                            <div className="w-64 rounded-md overflow-hidden shadow-lg bg-white">
+                            <div
+                                className="w-64 rounded-md overflow-hidden shadow-lg bg-white transition-all hover:shadow-xl cursor-pointer"
+                                onClick={() => handleRegionClick(hoverInfo.regionName)}
+                            >
                                 {getRegionData(hoverInfo.regionName)?.image && (
                                     <div className="relative w-full h-28">
                                         <Image
