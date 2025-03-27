@@ -17,7 +17,7 @@ export default function RegionClimateCard({ region }: RegionClimateCardProps) {
         <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
             <div className="relative h-40 w-full">
                 <Image
-                    src={region.image}
+                    src={region.climateImage}
                     alt={`${region.name} region`}
                     fill
                     className="object-cover"

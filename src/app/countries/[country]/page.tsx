@@ -5,10 +5,9 @@ import { countries } from '@/data/countries';
 import { getCountryFlag } from '@/lib/getCountryFlag';
 
 import BasicCountryInformation from '@/components/country/BasicCountryInformation';
-import QuickFactsBox from '@/components/country/QuickFactsBox';
+import QuickTravelFactsSection from '@/components/country/QuickTravelFactsSection';
 import RegionalBreakdown from '@/components/country/RegionalBreakdown';
 import ClimateSection from '@/components/country/ClimateSection';
-import CountryIntro from '@/components/country/CountryIntro';
 import RegionalMap from '@/components/country/RegionalMap';
 import TravelEssentialsSection from '@/components/country/TravelEssentialsSection';
 import EntryPointsSection from '@/components/country/EntryPointsSection';
@@ -70,54 +69,47 @@ export default async function CountryPage({ params }: CountryPageProps) {
             {/* Main Content */}
             <div className="max-w-6xl mx-auto px-4 py-8">
                 {/* Country Intro First */}
-                <CountryIntro name={country.name} capital={country.capital} />
+                <QuickTravelFactsSection country={country}/>
 
                 {/* Regional Information - Moved up as requested */}
                 <div className="my-8">
-                    <RegionalBreakdown regions={country.regions} />
+                    <RegionalBreakdown regions={country.regions}/>
                     <div className="mt-6">
-                        <RegionalMap />
+                        <RegionalMap/>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                    {/* Left Column - Main Content */}
-                    <div className="lg:col-span-2 space-y-8">
-                        {/* Unified Basic Country Information */}
-                        <BasicCountryInformation
-                            languages={country.languages}
-                            currency={country.currency}
-                            timeZones={country.timeZones}
-                            visaRequirements={country.visaRequirements}
-                            safetyTips={country.safetyTips}
-                            countryName={country.name}
-                        />
+                <div className="space-y-12">
+                    {/* Unified Basic Country Information */}
+                    <BasicCountryInformation
+                        languages={country.languages}
+                        currency={country.currency}
+                        timeZones={country.timeZones}
+                        visaRequirements={country.visaRequirements}
+                        safetyTips={country.safetyTips}
+                        countryName={country.name}
+                    />
 
-                        <CulturalSection cultural={country.cultural} holidays={country.holidays} />
+                    <CulturalSection cultural={country.cultural} holidays={country.holidays}/>
 
-                        {/* Travel Essentials Section with integrated Emergency info */}
-                        <TravelEssentialsSection
-                            connectivity={country.connectivity}
-                            transportation={country.transportation}
-                            electricity={country.electricity}
-                            cuisine={country.cuisine}
-                            emergency={country.emergency}
-                            countryName={country.name}
-                        />
+                    {/* Travel Essentials Section with integrated Emergency info */}
+                    <TravelEssentialsSection
+                        connectivity={country.connectivity}
+                        transportation={country.transportation}
+                        electricity={country.electricity}
+                        cuisine={country.cuisine}
+                        emergency={country.emergency}
+                        countryName={country.name}
+                    />
 
-                        <ClimateSection climate={country.climate} />
+                    <ClimateSection climate={country.climate}/>
 
-                        {/* Entry Points Section */}
-                        <EntryPointsSection
-                            entryPoints={country.entryPoints}
-                            countryName={country.name}
-                        />
-                    </div>
-
-                    {/* Right Column - Sidebar */}
-                    <div className="space-y-8">
-                        <QuickFactsBox country={country} />
-                    </div>
+                    {/* Entry Points Section */}
+                    <EntryPointsSection
+                        entryPoints={country.entryPoints}
+                        countryName={country.name}
+                        commonRoutes={country.commonRoutes}
+                    />
                 </div>
             </div>
         </main>

@@ -53,6 +53,7 @@ export type Region = {
     area: string;
     population: string;
     image: string;
+    climateImage: string;
     slug: string;
     heroImage: string;
     description: string;
@@ -93,8 +94,18 @@ export type EntryPoint = {
     name: string;
     type: "airport" | "border" | "port";
     nearestCity: string;
-    code?: string; // Airport code, if applicable
+    code?: string;
     notes?: string;
+};
+
+export type EntryRoute = {
+    fromCountry: string;
+    options: {
+        type: 'flight' | 'land' | 'sea';
+        description: string;
+        duration?: string;
+        frequency?: string;
+    }[];
 };
 
 export type Country = {
@@ -118,9 +129,12 @@ export type Country = {
         [regionSlug: string]: MonthlyClimate[];
     };
     entryPoints: EntryPoint[];
+    commonRoutes?: EntryRoute[];
     funFact: string;
     population: string;
     area: string; // in km²
+    safetyLevel?: string;
+    topReasons?: string[];
 };
 
 // Portugal data
@@ -234,6 +248,7 @@ export const portugal: Country = {
             slug: "north-region",
             summary: "Cultural and historical heartland with the city of Porto and the Douro Valley.",
             image: "/images/regions/north-region/north-region.jpg",
+            climateImage: "/images/regions/north-region/north-region-1000.jpg",
             heroImage: "/images/regions/north-region/north-region-hero.jpg",
             description: "The North Region is known for its cultural depth and historic significance, highlighted by the city of Porto and the wine-rich Douro Valley. With ancient towns, mountains, and rivers, it offers a mix of tradition and natural beauty."
         },
@@ -245,6 +260,7 @@ export const portugal: Country = {
             slug: "central-region",
             summary: "Home to Coimbra, medieval villages, and Serra da Estrela mountains.",
             image: "/images/regions/central-region/central-region.jpg",
+            climateImage: "/images/regions/central-region/central-region-1000.jpg",
             heroImage: "/images/regions/central-region/central-region-hero.jpg",
             description: "Central Portugal offers charming villages, historic university towns, and scenic mountain landscapes, including the highest peak in mainland Portugal — Serra da Estrela."
         },
@@ -256,6 +272,7 @@ export const portugal: Country = {
             slug: "west-tagus-valley",
             summary: "Fertile valley known for agriculture, history, and charming towns.",
             image: "/images/regions/west-tagus-valley/west-tagus-valley.jpg",
+            climateImage: "/images/regions/west-tagus-valley/west-tagus-valley-1000.jpg",
             heroImage: "/images/regions/west-tagus-valley/west-tagus-valley-hero.jpg",
             description: "This region blends rural charm with rich history and agriculture. It's dotted with traditional towns and rolling vineyards along the Tagus River."
         },
@@ -267,6 +284,7 @@ export const portugal: Country = {
             slug: "greater-lisbon",
             summary: "Portugal’s vibrant capital region with history, nightlife, and culture.",
             image: "/images/regions/greater-lisbon/greater-lisbon.jpg",
+            climateImage: "/images/regions/greater-lisbon/greater-lisbon-1000.jpg",
             heroImage: "/images/regions/greater-lisbon/greater-lisbon-hero.jpg",
             description: "Greater Lisbon is the economic and cultural hub of Portugal. The region features iconic architecture, museums, nightlife, and a dynamic blend of tradition and modernity."
         },
@@ -278,6 +296,7 @@ export const portugal: Country = {
             slug: "setubal-peninsula",
             summary: "Coastal region known for beaches, seafood, and natural parks.",
             image: "/images/regions/setubal-peninsula/setubal-peninsula.jpg",
+            climateImage: "/images/regions/setubal-peninsula/setubal-peninsula-1000.jpg",
             heroImage: "/images/regions/setubal-peninsula/setubal-peninsula-hero.jpg",
             description: "The Setúbal Peninsula offers beautiful beaches, fishing villages, and natural parks like Arrábida. It’s a growing residential region with excellent ferry and train access to Lisbon."
         },
@@ -289,6 +308,7 @@ export const portugal: Country = {
             slug: "alentejo-region",
             summary: "Expansive plains, cork trees, vineyards, and historic towns.",
             image: "/images/regions/alentejo-region/alentejo-region.jpg",
+            climateImage: "/images/regions/alentejo-region/alentejo-region-1000.jpg",
             heroImage: "/images/regions/alentejo-region/alentejo-region-hero.jpg",
             description: "Known for its slow pace, rolling plains, and medieval towns, Alentejo is the heart of rural Portugal. It’s rich in agriculture, wine production, and historical architecture."
         },
@@ -300,6 +320,7 @@ export const portugal: Country = {
             slug: "algarve-region",
             summary: "Sunny beaches, golf resorts, and picturesque coastal towns.",
             image: "/images/regions/algarve-region/algarve-region.jpg",
+            climateImage: "/images/regions/algarve-region/algarve-region-1000.jpg",
             heroImage: "/images/regions/algarve-region/algarve-region-hero.jpg",
             description: "Algarve is Portugal’s most popular tourist region, famous for its sunny weather, dramatic coastlines, beach resorts, and charming seaside towns like Lagos and Tavira."
         },
@@ -311,6 +332,7 @@ export const portugal: Country = {
             slug: "madeira-region",
             summary: "Island paradise with lush landscapes and volcanic origins.",
             image: "/images/regions/madeira-region/madeira-region.jpg",
+            climateImage: "/images/regions/madeira-region/madeira-region-1000.jpg",
             heroImage: "/images/regions/madeira-region/madeira-region-hero.jpg",
             description: "Madeira is a subtropical island known for its mountains, levadas (irrigation channels), and botanical beauty. The region offers hiking, ocean views, and vibrant local culture."
         },
@@ -322,6 +344,7 @@ export const portugal: Country = {
             slug: "azores-region",
             summary: "Remote Atlantic archipelago with crater lakes and whale watching.",
             image: "/images/regions/azores-region/azores-region.jpg",
+            climateImage: "/images/regions/azores-region/azores-region-1000.jpg",
             heroImage: "/images/regions/azores-region/azores-region-hero.jpg",
             description: "The Azores archipelago is a group of volcanic islands in the North Atlantic, famous for crater lakes, geothermal springs, whale watching, and green landscapes."
         }
@@ -583,11 +606,98 @@ export const portugal: Country = {
             nearestCity: "Porto",
             code: "OPO",
             notes: "Second largest international airport, serving the northern region."
+        },
+        {
+            name: "Valença-Tui Border Crossing",
+            type: "border",
+            nearestCity: "Valença",
+            notes: "Main crossing point between northern Portugal and Spain, connecting the A3 and A-55 highways."
+        },
+        {
+            name: "Vila Real de Santo António-Ayamonte Border",
+            type: "border",
+            nearestCity: "Vila Real de Santo António",
+            notes: "Southern crossing point connecting Portugal's Algarve with Spain's Andalusia region."
+        },
+        {
+            name: "Port of Lisbon",
+            type: "port",
+            nearestCity: "Lisbon",
+            notes: "Major cruise ship terminal and commercial port serving Portugal's capital."
+        },
+        {
+            name: "Port of Leixões",
+            type: "port",
+            nearestCity: "Porto",
+            notes: "Second largest artificial port in Portugal, serving the northern region."
+        }
+    ],
+    commonRoutes: [
+        {
+            fromCountry: "Spain",
+            options: [
+                {
+                    type: "land",
+                    description: "Drive across multiple border crossings, most notably via A-55/A3 from Vigo to Porto or A-5/A6 from Badajoz to Lisbon",
+                    duration: "30 minutes to 1 hour at the border"
+                },
+                {
+                    type: "flight",
+                    description: "Direct flights from Madrid, Barcelona, and other major Spanish cities to Lisbon and Porto",
+                    duration: "1-1.5 hours",
+                    frequency: "Multiple daily flights"
+                },
+                {
+                    type: "land",
+                    description: "Train services from Madrid to Lisbon (Lusitania night train) and from Vigo to Porto",
+                    duration: "9-10 hours from Madrid, 2.5 hours from Vigo",
+                    frequency: "Daily service"
+                }
+            ]
+        },
+        {
+            fromCountry: "United Kingdom",
+            options: [
+                {
+                    type: "flight",
+                    description: "Direct flights from London, Manchester, Bristol, and Edinburgh to Lisbon, Porto, and Faro",
+                    duration: "2.5-3 hours",
+                    frequency: "Multiple daily flights"
+                },
+                {
+                    type: "sea",
+                    description: "Cruise ships regularly dock at Lisbon and Porto ports as part of European itineraries",
+                    frequency: "Seasonal (mainly April-October)"
+                }
+            ]
+        },
+        {
+            fromCountry: "France",
+            options: [
+                {
+                    type: "flight",
+                    description: "Direct flights from Paris, Lyon, Marseille, and other cities to major Portuguese airports",
+                    duration: "2-2.5 hours",
+                    frequency: "Multiple daily flights"
+                },
+                {
+                    type: "land",
+                    description: "Long-distance bus services connecting Paris and other French cities to Lisbon and Porto",
+                    duration: "24+ hours",
+                    frequency: "Several weekly departures"
+                }
+            ]
         }
     ],
     funFact: "Portugal is Europe's oldest nation-state with borders virtually unchanged since 1139.",
-    population: "10.3 million",
-    area: "92,212 km²"
+    population: "10.58 million",
+    area: "92,152 km²",
+    safetyLevel: "Very Safe",
+    topReasons: [
+        "Stunning coastal towns and beautiful beaches along the Algarve",
+        "Rich maritime history and well-preserved medieval architecture",
+        "World-renowned food and wine culture, including port wine and seafood"
+    ],
 };
 
 // Export collection of countries
