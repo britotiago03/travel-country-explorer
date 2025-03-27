@@ -79,6 +79,14 @@ export type MonthlyClimate = {
     averageLow: number; // in Celsius
     rainfall: number; // in mm
     notes?: string;
+    crowdLevel?: 'Low' | 'Medium' | 'High';
+    events?: string[];
+    regionalConditions?: {
+        [region: string]: {
+            description: string;
+            isRecommended: boolean;
+        }
+    };
 };
 
 export type EntryPoint = {
@@ -106,7 +114,9 @@ export type Country = {
     transportation: string;
     electricity: string;
     cuisine: string;
-    climate: MonthlyClimate[];
+    climate: {
+        [regionSlug: string]: MonthlyClimate[];
+    };
     entryPoints: EntryPoint[];
     funFact: string;
     population: string;
@@ -333,22 +343,232 @@ export const portugal: Country = {
     transportation: "Efficient public transportation in cities, including metro systems in Lisbon and Porto. Trains connect major cities, while buses serve smaller towns. Car rental is a good option for exploring rural areas. Many historic city centers are best explored on foot due to narrow streets and limited parking.",
     electricity: "230V, 50Hz with Type F (Schuko) plugs. Travelers from the UK or US may need adapters. Power outlets typically accommodate two round pins. Most hotels in tourist areas have adapters available upon request.",
     cuisine: "Portuguese cuisine is known for fresh seafood, especially bacalhau (salted cod) which is prepared in hundreds of different ways. Popular dishes include pastéis de nata (custard tarts), caldo verde (kale soup), and grilled sardines. Portugal is famous for Port wine, Vinho Verde, and Madeira wines. Meal times are typically later than in northern Europe or the US, with lunch around 1-3 PM and dinner after 8 PM.",
-    climate: [
-        {
-            month: "January",
-            averageHigh: 15,
-            averageLow: 8,
-            rainfall: 110,
-            notes: "Mild but rainy winter month, especially in the north."
-        },
-        {
-            month: "July",
-            averageHigh: 28,
-            averageLow: 18,
-            rainfall: 6,
-            notes: "Peak summer month, hot and dry, especially in the interior."
-        }
-    ],
+    climate: {
+        "nationwide": [
+            {
+                month: "January",
+                averageHigh: 15,
+                averageLow: 8,
+                rainfall: 110,
+                notes: "Winter month with mild temperatures in the south but cooler and wetter conditions in the north. The Algarve remains pleasant with sunny days.",
+                crowdLevel: "Low",
+                events: ["New Year's Day Celebrations", "International Chocolate Festival in Óbidos"]
+            },
+            {
+                month: "February",
+                averageHigh: 16,
+                averageLow: 9,
+                rainfall: 90,
+                notes: "Similar to January but with early signs of spring. Carnival celebrations bring color and festivities across the country.",
+                crowdLevel: "Low",
+                events: ["Carnival (varies by date)", "Almond Blossom Festival in the Algarve"]
+            },
+            {
+                month: "March",
+                averageHigh: 18,
+                averageLow: 10,
+                rainfall: 70,
+                notes: "Spring begins with wildflowers blooming across the countryside. Weather can be variable with occasional rain showers.",
+                crowdLevel: "Low",
+                events: ["BTL - Lisbon Travel Market", "International Chocolate Festival in Óbidos"]
+            },
+            {
+                month: "April",
+                averageHigh: 19,
+                averageLow: 11,
+                rainfall: 65,
+                notes: "Ideal month for travel with pleasant temperatures and blooming landscapes. Easter celebrations are prominent.",
+                crowdLevel: "Medium",
+                events: ["Easter Celebrations", "Freedom Day (April 25)", "Flower Torch Festival in São Brás de Alportel"]
+            },
+            {
+                month: "May",
+                averageHigh: 22,
+                averageLow: 13,
+                rainfall: 55,
+                notes: "One of the best months to visit with warm days, cool evenings, and relatively few tourists compared to summer months.",
+                crowdLevel: "Medium",
+                events: ["Queima das Fitas Student Festivities", "Fatima Pilgrimage", "Iberian Mask Festival"]
+            },
+            {
+                month: "June",
+                averageHigh: 25,
+                averageLow: 16,
+                rainfall: 30,
+                notes: "Start of summer with warm weather and many cultural events. Popular Saints festivals bring lively street parties to Lisbon and Porto.",
+                crowdLevel: "Medium",
+                events: ["Santo António Festival (Lisbon)", "São João Festival (Porto)", "Rock in Rio Lisboa"]
+            },
+            {
+                month: "July",
+                averageHigh: 28,
+                averageLow: 18,
+                rainfall: 6,
+                notes: "Peak summer month with hot, dry conditions, especially inland. Coastal areas are popular as beaches fill with locals and tourists alike.",
+                crowdLevel: "High",
+                events: ["MEO Sudoeste Music Festival", "NOS Alive Music Festival", "International Motorcycle Convention in Faro"]
+            },
+            {
+                month: "August",
+                averageHigh: 28,
+                averageLow: 18,
+                rainfall: 8,
+                notes: "Hottest and busiest month. Expect crowded beaches and higher prices. Inland areas can be very hot, but coastal areas remain pleasant.",
+                crowdLevel: "High",
+                events: ["Festa do Avante", "Romaria da Senhora da Agonia in Viana do Castelo", "Boom Festival (biennial)"]
+            },
+            {
+                month: "September",
+                averageHigh: 26,
+                averageLow: 17,
+                rainfall: 35,
+                notes: "Excellent month to visit as crowds thin but weather remains warm. Sea temperatures are at their highest after summer heating.",
+                crowdLevel: "Medium",
+                events: ["Wine Harvest Festivals across wine regions", "Nossa Senhora dos Remédios Festival"]
+            },
+            {
+                month: "October",
+                averageHigh: 22,
+                averageLow: 14,
+                rainfall: 80,
+                notes: "Autumn arrives with golden colors in the north. Weather remains pleasant for sightseeing with occasional rain showers starting.",
+                crowdLevel: "Medium",
+                events: ["Lisbon Architecture Triennale", "Halloween celebrations in growing popularity"]
+            },
+            {
+                month: "November",
+                averageHigh: 18,
+                averageLow: 11,
+                rainfall: 100,
+                notes: "Rainy season begins in earnest, particularly in the north. The south (Algarve) remains mild and fairly dry.",
+                crowdLevel: "Low",
+                events: ["St. Martin's Day (November 11)", "Web Summit in Lisbon", "All Saints' Day (November 1)"]
+            },
+            {
+                month: "December",
+                averageHigh: 16,
+                averageLow: 9,
+                rainfall: 105,
+                notes: "Winter arrives but remains mild by European standards. Christmas decorations and markets create a festive atmosphere.",
+                crowdLevel: "Low",
+                events: ["Christmas Markets", "New Year's Eve celebrations", "Traditional winter festivals"]
+            }
+        ],
+        "north-region": [
+            {
+                month: "January",
+                averageHigh: 13,
+                averageLow: 5,
+                rainfall: 158,
+                notes: "Cold and wet in the North. Good time for indoor activities, museums, and Port wine tasting in Porto.",
+                crowdLevel: "Low",
+                events: ["New Year's Day Celebrations"]
+            },
+            {
+                month: "April",
+                averageHigh: 17,
+                averageLow: 9,
+                rainfall: 92,
+                notes: "Spring brings blooming landscapes. Ideal for exploring historic towns and starting to enjoy outdoor activities.",
+                crowdLevel: "Medium",
+                events: ["Holy Week Processions", "Freedom Day (April 25)"]
+            },
+            {
+                month: "July",
+                averageHigh: 25,
+                averageLow: 15,
+                rainfall: 18,
+                notes: "Pleasant summer temperatures compared to southern Portugal. Great time for hiking in national parks and exploring the Douro Valley.",
+                crowdLevel: "High",
+                events: ["NOS Alive Music Festival", "São João Festival in Porto"]
+            },
+            {
+                month: "October",
+                averageHigh: 19,
+                averageLow: 11,
+                rainfall: 131,
+                notes: "Beautiful autumn foliage, especially in the Douro Valley. Wine harvest season with many festivals.",
+                crowdLevel: "Medium",
+                events: ["Wine Harvest Festivals", "Musica no Coração"]
+            }
+        ],
+        "algarve-region": [
+            {
+                month: "January",
+                averageHigh: 16,
+                averageLow: 9,
+                rainfall: 78,
+                notes: "Mild winter with plenty of sunny days. Perfect for golfing and peaceful coastal walks without crowds.",
+                crowdLevel: "Low",
+                events: ["Almond Blossom Starting"]
+            },
+            {
+                month: "April",
+                averageHigh: 20,
+                averageLow: 12,
+                rainfall: 38,
+                notes: "Warm pleasant days, cool evenings. Good for beach visits on warmer days and exploring natural parks.",
+                crowdLevel: "Medium",
+                events: ["Easter Celebrations", "Algarve's Medieval Days"]
+            },
+            {
+                month: "July",
+                averageHigh: 29,
+                averageLow: 20,
+                rainfall: 1,
+                notes: "Hot and dry with virtually no rain. Peak beach season with very busy coastal towns and higher prices.",
+                crowdLevel: "High",
+                events: ["International Motorcycle Convention in Faro", "Portimão Sardine Festival"]
+            },
+            {
+                month: "October",
+                averageHigh: 23,
+                averageLow: 15,
+                rainfall: 67,
+                notes: "Warm days continue with occasional rain. Sea remains warm enough for swimming. Much quieter than summer.",
+                crowdLevel: "Medium",
+                events: ["Algarve Nature Week", "Birdwatching Festival"]
+            }
+        ],
+        "madeira-region": [
+            {
+                month: "January",
+                averageHigh: 19,
+                averageLow: 13,
+                rainfall: 112,
+                notes: "Mild even in winter with occasional rainfall. Great for hiking and enjoying the lush landscapes.",
+                crowdLevel: "Medium",
+                events: ["New Year's Fireworks in Funchal - among the largest in the world"]
+            },
+            {
+                month: "April",
+                averageHigh: 20,
+                averageLow: 14,
+                rainfall: 68,
+                notes: "Flower Festival month with pleasant temperatures and stunning floral displays.",
+                crowdLevel: "Medium",
+                events: ["Madeira Flower Festival", "Easter Celebrations"]
+            },
+            {
+                month: "July",
+                averageHigh: 25,
+                averageLow: 18,
+                rainfall: 6,
+                notes: "Warm and sunny with very little rain. Perfect for swimming, hiking, and outdoor activities.",
+                crowdLevel: "High",
+                events: ["Madeira Jazz Festival", "Santana Folklore Festival"]
+            },
+            {
+                month: "October",
+                averageHigh: 24,
+                averageLow: 17,
+                rainfall: 93,
+                notes: "Still warm with increasing chances of rain. Great month for hiking the levadas (irrigation channels) without summer heat.",
+                crowdLevel: "Medium",
+                events: ["Columbus Festival in Porto Santo", "Nature Festival"]
+            }
+        ]
+    },
     entryPoints: [
         {
             name: "Lisbon Portela Airport",
