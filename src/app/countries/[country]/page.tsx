@@ -1,4 +1,6 @@
-// countries/[country]/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { countries } from '@/data/countries';
@@ -16,21 +18,93 @@ import CulturalSection from '@/components/country/CulturalSection';
 type CountryPageProps = {
     params: {
         country: string;
-    };
+    } | Promise<{ country: string }>;
 };
 
-export function generateStaticParams() {
-    return Object.keys(countries).map((slug) => ({
-        country: slug,
-    }));
+// Type guard to check if an object is a promise
+function isPromise<T>(obj: any): obj is Promise<T> {
+    return obj && typeof obj.then === 'function';
 }
 
-export default async function CountryPage({ params }: CountryPageProps) {
-    const { country: countrySlug } = await Promise.resolve(params);
-    const country = countries[countrySlug];
+export default function CountryPage({ params }: CountryPageProps) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [countrySlug, setCountrySlug] = useState<string | null>(null);
 
+    // Handle params being a Promise in Next.js 15
+    useEffect(() => {
+        const handleParams = async () => {
+            try {
+                if (isPromise(params)) {
+                    const resolvedParams = await params;
+                    setCountrySlug(resolvedParams.country);
+                } else {
+                    setCountrySlug(params.country);
+                }
+            } catch (error) {
+                console.error("Error resolving params:", error);
+                // Handle the error appropriately
+            }
+        };
+
+        handleParams();
+    }, [params]);
+
+    // Wait for country slug to be available
+    useEffect(() => {
+        if (countrySlug) {
+            const countryData = countries[countrySlug];
+            if (!countryData) {
+                notFound();
+            }
+            setIsLoading(false);
+        }
+    }, [countrySlug]);
+
+    useEffect(() => {
+        if (!countrySlug) return;
+
+        // Scroll to #map if it's in the hash
+        if (window.location.hash === '#map') {
+            const el = document.getElementById('map');
+            if (el) {
+                setTimeout(() => {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }, 300); // Delay ensures it's rendered
+            }
+        }
+    }, [countrySlug]);
+
+    useEffect(() => {
+        const scrollToHash = () => {
+            if (window.location.hash === '#map') {
+                const el = document.getElementById('map');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        };
+
+        // Wait a bit longer to ensure DOM is ready
+        const timeout = setTimeout(scrollToHash, 600); // You can tweak this
+
+        return () => clearTimeout(timeout);
+    }, [isLoading]); // Important: only run this after loading completes
+
+    // Show loading state
+    if (isLoading || !countrySlug) {
+        return (
+            <div className="min-h-screen bg-gray-50 pt-16 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                    <p className="mt-4">Loading country information...</p>
+                </div>
+            </div>
+        );
+    }
+
+    const country = countries[countrySlug];
     if (!country) {
-        notFound();
+        return null; // This should never happen as notFound() will redirect
     }
 
     const flagUrl = getCountryFlag(country.name);
@@ -74,7 +148,7 @@ export default async function CountryPage({ params }: CountryPageProps) {
                 {/* Regional Information - Moved up as requested */}
                 <div className="my-8">
                     <RegionalBreakdown regions={country.regions}/>
-                    <div className="mt-6">
+                    <div id="map" className="mt-6">
                         <RegionalMap/>
                     </div>
                 </div>

@@ -1,4 +1,6 @@
-// app/countries/[country]/regions/[region]/page.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,38 +13,100 @@ import ClimateSection from '@/components/destination/ClimateSection';
 import ResourcesSection from '@/components/destination/ResourcesSection';
 import { getRegionHighlights } from '@/data/regionHighlights';
 import { getBestTimeToVisit, getMonthsToAvoid, getRegionTags, getRegionDirection } from '@/utils/regionHelpers';
+import { getRegionDistricts } from "@/data/regionDistricts";
 
 type RegionPageProps = {
-    params: Promise<{
+    params: {
         country: string;
         region: string;
-    }>;
+    } | Promise<{ country: string; region: string }>;
 };
 
-export function generateStaticParams() {
-    const paths: { country: string; region: string }[] = [];
-
-    for (const [countrySlug, country] of Object.entries(countries)) {
-        for (const region of country.regions) {
-            paths.push({ country: countrySlug, region: region.slug });
-        }
-    }
-
-    return paths;
+// Type guard to check if an object is a promise
+function isPromise<T>(obj: any): obj is Promise<T> {
+    return obj && typeof obj.then === 'function';
 }
 
-export default async function RegionPage({ params }: RegionPageProps) {
-    // Await the params object before accessing its properties
-    const { country: countrySlug, region: regionSlug } = await params;
+export default function RegionPage({ params }: RegionPageProps) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [pageData, setPageData] = useState<{
+        countrySlug: string;
+        regionSlug: string;
+        country: any;
+        region: any;
+        highlights: any[];
+    } | null>(null);
 
-    const country = countries[countrySlug];
-    if (!country) return notFound();
+    // Handle params being a Promise in Next.js 15
+    useEffect(() => {
+        const handleParams = async () => {
+            try {
+                let countrySlug, regionSlug;
 
-    const region = country.regions.find((r) => r.slug === regionSlug);
-    if (!region) return notFound();
+                if (isPromise(params)) {
+                    const resolvedParams = await params;
+                    countrySlug = resolvedParams.country;
+                    regionSlug = resolvedParams.region;
+                } else {
+                    countrySlug = params.country;
+                    regionSlug = params.region;
+                }
 
-    // Get region highlights
-    const highlights = getRegionHighlights(regionSlug);
+                // Get country and region data
+                const country = countries[countrySlug];
+                if (!country) {
+                    // Handle not found in the effect
+                    setIsLoading(false);
+                    return; // Return early without calling notFound() directly
+                }
+
+                const region = country.regions.find((r) => r.slug === regionSlug);
+                if (!region) {
+                    // Handle not found in the effect
+                    setIsLoading(false);
+                    return; // Return early without calling notFound() directly
+                }
+
+                // Get region highlights
+                const highlights = getRegionHighlights(regionSlug);
+
+                setPageData({
+                    countrySlug,
+                    regionSlug,
+                    country,
+                    region,
+                    highlights
+                });
+
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error resolving params:", error);
+                setIsLoading(false);
+            }
+        };
+
+        handleParams();
+    }, [params]);
+
+    // Show loading state
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50 pt-16 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+                    <p className="mt-4">Loading region information...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Handle not found cases after loading is complete
+    if (!pageData) {
+        notFound();
+        // No need for a return here as notFound() redirects
+    }
+
+    const { countrySlug, regionSlug, country, region, highlights } = pageData!;
 
     return (
         <main className="min-h-screen bg-gray-50 pt-16">
@@ -154,11 +218,30 @@ export default async function RegionPage({ params }: RegionPageProps) {
                 {/* Mini Map Section */}
                 <section id="map" className="mt-8 bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="p-6">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Location Overview</h2>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Explore {region.name} Districts</h2>
                         <MiniMap countrySlug={countrySlug} regionSlug={regionSlug} />
                         <p className="text-sm text-gray-600 mt-3">
                             {region.name} is located in the {getRegionDirection(regionSlug)} of {country.name}, covering an area of {region.area}.
+                            The region is divided into several distinct districts, each with its own character and attractions.
                         </p>
+
+                        {/* Optional Quick Links - Show if there are districts defined */}
+                        {getRegionDistricts(regionSlug).length > 0 && (
+                            <div className="mt-4 pt-4 border-t border-gray-200">
+                                <h3 className="text-sm font-semibold text-gray-700 mb-2">Quick Access to Districts:</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {getRegionDistricts(regionSlug).map((district, index) => (
+                                        <Link
+                                            key={index}
+                                            href={`/countries/${countrySlug}/regions/${regionSlug}/districts/${district.slug}`}
+                                            className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-full px-3 py-1 transition"
+                                        >
+                                            {district.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </section>
 
